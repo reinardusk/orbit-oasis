@@ -13,7 +13,7 @@ const StacksHolder = () => {
         <Stack.Screen
           name="DetailPlanet"
           component={DetailPlanet}
-          options={{ headerShown: true }}
+          options={{ headerShown: true, title: "Planet's Detail" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

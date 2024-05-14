@@ -20,20 +20,20 @@ export default function TabNavigation() {
           let iconName: TabIconName = "planet-outline";
           if (route.name === "Planets") {
             focused
-              ? ((iconName = "planet"), (color = "white"))
+              ? ((iconName = "planet"), (color = "#8563ff"))
               : ((iconName = "planet-outline"), (color = "gray"));
           } else if (route.name === "Wishlist") {
             focused
-              ? ((iconName = "heart"), (color = "white"))
+              ? ((iconName = "heart"), (color = "#8563ff"))
               : ((iconName = "heart-outline"), (color = "gray"));
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarLabel: ({ focused, color }) => {
           if (route.name === "Planets") {
-            focused ? (color = "white") : (color = "gray");
+            focused ? (color = "#8563ff") : (color = "gray");
           } else if (route.name === "Wishlist") {
-            focused ? (color = "white") : (color = "gray");
+            focused ? (color = "#8563ff") : (color = "gray");
           }
           return <Text style={{ ...styles.label, color }}>{route.name}</Text>;
         },

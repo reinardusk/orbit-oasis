@@ -65,19 +65,47 @@ const DetailPlanet = () => {
           <Text style={styles.cardTitle}>{planet.name}</Text>
 
           <Text style={styles.text}>
-            Rotation Period: {planet.rotation_period} hours
+            <Text style={{ ...styles.text, fontWeight: "700" }}>
+              Rotation Period:
+            </Text>{" "}
+            {planet.rotation_period} hours
           </Text>
           <Text style={styles.text}>
-            Orbital Period: {planet.orbital_period} days
+            <Text style={{ ...styles.text, fontWeight: "700" }}>
+              Orbital Period:
+            </Text>{" "}
+            {planet.orbital_period} days
           </Text>
-          <Text style={styles.text}>Diameter: {planet.diameter} km</Text>
-          <Text style={styles.text}>Climate: {planet.climate}</Text>
-          <Text style={styles.text}>Gravity: {planet.gravity}</Text>
-          <Text style={styles.text}>Terrain: {planet.terrain}</Text>
           <Text style={styles.text}>
-            Surface Water: {planet.surface_water} km
+            <Text style={{ ...styles.text, fontWeight: "700" }}>Diameter:</Text>{" "}
+            {planet.diameter} km
           </Text>
-          <Text style={styles.text}>Population: {planet.population}</Text>
+          <Text style={styles.text}>
+            <Text style={{ ...styles.text, fontWeight: "700" }}>Climate: </Text>
+            {planet.climate}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={{ ...styles.text, fontWeight: "700" }}>Gravity:</Text>{" "}
+            {planet.gravity}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={{ ...styles.text, fontWeight: "700" }}>
+              Diameter:{" "}
+            </Text>
+            Terrain {planet.terrain}
+          </Text>
+          <Text style={styles.text}>
+            <Text style={{ ...styles.text, fontWeight: "700" }}>
+              Surface Water:
+            </Text>{" "}
+            {planet.surface_water} km
+          </Text>
+          <Text style={styles.text}>
+            <Text style={{ ...styles.text, fontWeight: "700" }}>
+              Population:
+            </Text>{" "}
+            {planet.population}
+          </Text>
           <TouchableOpacity
             style={styles.wishlistButton}
             onPress={handleAddToWishlist}
@@ -96,7 +124,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   text: {
-    fontSize: 18,
+    fontSize: 17,
     color: "white",
   },
   cardHeader: {
@@ -105,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cardTitle: {
-    fontSize: 35,
+    fontSize: 30,
     fontWeight: "bold",
     color: "white",
     textAlign: "center",
@@ -120,14 +148,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   wishlistButton: {
-    backgroundColor: "white",
+    backgroundColor: "#ff6584",
     padding: 10,
     borderRadius: 10,
     marginVertical: 15,
     alignItems: "center",
   },
   wishlistText: {
-    color: "#393e46",
+    color: "white",
     fontSize: 18,
     fontWeight: "bold",
   },

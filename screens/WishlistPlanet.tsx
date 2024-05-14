@@ -35,13 +35,13 @@ const WishlistPlanet = () => {
         colors={["rgba(0,0,0, 1)", "rgba(142, 5, 194, 0.4)"]}
         style={styles.container}
       >
-        <Text style={styles.title}>Wishlist Planet</Text>
+        <Text style={styles.title}>Wishlist</Text>
         <FlatList
           data={wishlist}
           keyExtractor={(item) => item.name}
           renderItem={({ item }) => (
             <HorizontalLinearGradient
-              colors={["rgba(142, 5, 194, 0.6)", "rgba(0,0,0, 0.9)"]}
+              colors={["rgba(255, 101, 132, 0.6)", "rgba(0,0,0, 0.9)"]}
               start={[0, 1]}
               end={[1, 0]}
               style={styles.cardContainer}
@@ -52,7 +52,7 @@ const WishlistPlanet = () => {
                   style={styles.removeButton}
                   onPress={() => removePlanet(item.name)}
                 >
-                  <Text style={styles.text}>Remove</Text>
+                  <Text style={styles.removeText}>Remove</Text>
                 </TouchableOpacity>
               </View>
               <View style={styles.cardBodyContainer}>
@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     margin: 10,
-    padding: 10,
+    padding: 5,
+    paddingHorizontal: 10,
     borderRadius: 10,
   },
   cardHeader: {
@@ -105,7 +106,9 @@ const styles = StyleSheet.create({
   },
   removeText: {
     color: "white",
-    marginRight: 5,
+    fontWeight: "bold",
+    textAlignVertical: "center",
+    textAlign: "center",
   },
   cardBodyContainer: {
     flexDirection: "row",
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 10,
+    padding: 5,
   },
 });
 

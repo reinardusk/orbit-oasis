@@ -14,13 +14,10 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import Loading from "../components/Loading";
 import { PlanetsData } from "../types/types";
-import {
-  ParamListBase,
-  useFocusEffect,
-  useNavigation,
-} from "@react-navigation/native";
+import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
+import NotFound from "../components/NotFound";
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -31,17 +28,6 @@ export default function ListPlanet() {
   const [loading, setLoading] = useState<boolean>(false);
   const [planets, setPlanets] = useState<PlanetsData>({} as PlanetsData);
   const [search, setSearch] = useState<string>("");
-
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
-  const fadeIn = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 5000,
-      useNativeDriver: true,
-    }).start();
-  };
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -83,12 +69,6 @@ export default function ListPlanet() {
     fetchPlanets();
   }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fadeIn();
-    }, [])
-  );
-
   if (loading) {
     return <Loading />;
   }
@@ -116,7 +96,7 @@ export default function ListPlanet() {
             <Text style={styles.searchButton}>Search</Text>
           </TouchableOpacity>
         </View>
-        {planets && planets.results && planets.results.length > 0 && (
+        {planets && planets.results && planets.results.length > 0 ? (
           <FlatList
             data={planets.results}
             onEndReached={fetchNextPage}
@@ -125,8 +105,8 @@ export default function ListPlanet() {
             renderItem={({ item }) => (
               <HorizontalLinearGradient
                 start={[0, 1]}
-                end={[1, 0]}
-                colors={["rgba(255, 255, 255, 0.98)", "rgba(255, 255, 255, 1)"]}
+                end={[1, 1]}
+                colors={["rgba(255, 101, 132, 0.6)", "rgba(0,0,0, 0.9)"]}
                 style={styles.cardContainer}
               >
                 <View style={styles.cardHeader}>
@@ -136,7 +116,12 @@ export default function ListPlanet() {
                     onPress={() => moveToDetail(item.name, item.url)}
                   >
                     <Text style={styles.detailText}>Detail</Text>
-                    <AntDesign name="arrowright" size={18} color="black" />
+                    <AntDesign
+                      name="arrowright"
+                      size={18}
+                      color="black"
+                      style={styles.detailText}
+                    />
                   </TouchableOpacity>
                 </View>
                 <View style={styles.cardBodyContainer}>
@@ -170,6 +155,8 @@ export default function ListPlanet() {
               </HorizontalLinearGradient>
             )}
           />
+        ) : (
+          <NotFound />
         )}
       </AnimatedLinearGradient>
     </ImageBackground>
@@ -194,19 +181,23 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   text: {
-    color: "gray",
+    color: "white",
   },
   searchContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 10,
+    marginHorizontal: 10,
   },
   searchButton: {
-    backgroundColor: "#393e46",
+    backgroundColor: "#ff6584",
     color: "white",
-    padding: 5,
+    paddingVertical: 10,
     paddingHorizontal: 10,
     borderRadius: 5,
+    fontWeight: "bold",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
   searchInput: {
     flex: 1,
@@ -214,17 +205,19 @@ const styles = StyleSheet.create({
     borderColor: "#393e46",
     borderRadius: 5,
     marginRight: 5,
+    paddingVertical: 5,
     paddingHorizontal: 10,
     backgroundColor: "white",
   },
   cardContainer: {
-    padding: 5,
-    marginVertical: 5,
-    borderRadius: 5,
     shadowColor: "black",
     shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.5,
     textShadowRadius: 5,
+    margin: 10,
+    padding: 5,
+    paddingHorizontal: 10,
+    borderRadius: 10,
   },
   cardHeader: {
     flexDirection: "row",
@@ -234,11 +227,12 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "black",
+    color: "white",
   },
   cardBodyContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: 10,
   },
   cardImage: {
     width: 70,
@@ -251,6 +245,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   detailText: {
-    color: "black",
+    color: "#ff6584",
   },
 });
