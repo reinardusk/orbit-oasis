@@ -18,6 +18,7 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import NotFound from "../components/NotFound";
+import ScrollLoading from "../components/ScrollLoading";
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
@@ -26,6 +27,7 @@ const HorizontalLinearGradient =
 
 export default function ListPlanet() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [scrollLoading, setScrollLoading] = useState<boolean>(false);
   const [planets, setPlanets] = useState<PlanetsData>({} as PlanetsData);
   const [search, setSearch] = useState<string>("");
 
@@ -53,6 +55,7 @@ export default function ListPlanet() {
   const fetchNextPage = async () => {
     if (planets && planets.next && planets.results) {
       try {
+        setScrollLoading(true);
         const { data } = await axios.get(planets.next);
         // const prevPlanetResults = planets.results;
         setPlanets({
@@ -61,6 +64,8 @@ export default function ListPlanet() {
         });
       } catch (error) {
         console.error(error);
+      } finally {
+        setScrollLoading(false);
       }
     }
   };
@@ -78,6 +83,7 @@ export default function ListPlanet() {
         colors={["rgba(0,0,0, 1)", "rgba(142, 5, 194, 0.4)"]}
         style={styles.container}
       >
+        {scrollLoading && <ScrollLoading />}
         <View>
           <Text style={styles.title}>Orbit Oasis</Text>
           <Text style={styles.headerText}>

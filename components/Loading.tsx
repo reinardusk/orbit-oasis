@@ -10,7 +10,7 @@ function Loading() {
         colors={["rgba(0,0,0, 1)", "rgba(142, 5, 194, 0.4)"]}
         style={styles.container}
       >
-        <ActivityIndicator size="large" color="#5e8d91" />
+        <ActivityIndicator size="large" color="#ff6584" />
       </AnimatedLinearGradient>
     </>
   );
