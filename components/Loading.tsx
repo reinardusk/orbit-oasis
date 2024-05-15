@@ -7,7 +7,7 @@ function Loading() {
   return (
     <>
       <AnimatedLinearGradient
-        colors={["rgba(0,0,0, 1)", "rgba(142, 5, 194, 0.4)"]}
+        colors={["rgba(0,0,0, 0.9)", "rgba(142, 5, 194, 0.4)"]}
         style={styles.container}
       >
         <ActivityIndicator size="large" color="#ff6584" />

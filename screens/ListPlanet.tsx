@@ -27,6 +27,7 @@ const HorizontalLinearGradient =
 
 export default function ListPlanet() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingSearch, setLoadingSearch] = useState<boolean>(false);
   const [scrollLoading, setScrollLoading] = useState<boolean>(false);
   const [planets, setPlanets] = useState<PlanetsData>({} as PlanetsData);
   const [search, setSearch] = useState<string>("");
@@ -40,6 +41,18 @@ export default function ListPlanet() {
   const fetchPlanets = async () => {
     try {
       setLoading(true);
+      const { data } = await axios.get(`https://swapi.dev/api/planets/`);
+      setPlanets(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSearchPlanets = async () => {
+    try {
+      setLoadingSearch(true);
       const { data } = await axios.get(
         `https://swapi.dev/api/planets/?search=${search}`
       );
@@ -47,8 +60,7 @@ export default function ListPlanet() {
     } catch (error) {
       console.error(error);
     } finally {
-      setSearch("");
-      setLoading(false);
+      setLoadingSearch(false);
     }
   };
 
@@ -96,74 +108,77 @@ export default function ListPlanet() {
             style={styles.searchInput}
             placeholder="Search"
             onChangeText={setSearch}
-            onSubmitEditing={fetchPlanets}
+            onSubmitEditing={fetchSearchPlanets}
           />
-          <TouchableOpacity onPress={fetchPlanets}>
+          <TouchableOpacity onPress={fetchSearchPlanets}>
             <Text style={styles.searchButton}>Search</Text>
           </TouchableOpacity>
         </View>
-        {planets && planets.results && planets.results.length > 0 ? (
-          <FlatList
-            data={planets.results}
-            onEndReached={fetchNextPage}
-            extraData={planets.results}
-            keyExtractor={(item) => item.name}
-            renderItem={({ item }) => (
-              <HorizontalLinearGradient
-                start={[0, 1]}
-                end={[1, 1]}
-                colors={["rgba(255, 101, 132, 0.6)", "rgba(0,0,0, 0.9)"]}
-                style={styles.cardContainer}
-              >
-                <View style={styles.cardHeader}>
-                  <Text style={styles.cardTitle}>{item.name}</Text>
-                  <TouchableOpacity
-                    style={styles.detailButton}
-                    onPress={() => moveToDetail(item.name, item.url)}
-                  >
-                    <Text style={styles.detailText}>Detail</Text>
-                    <AntDesign
-                      name="arrowright"
-                      size={18}
-                      color="black"
-                      style={styles.detailText}
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.cardBodyContainer}>
-                  <View>
-                    <Text style={styles.text}>
-                      Rotation Period: {item.rotation_period} hours
-                    </Text>
-                    <Text style={styles.text}>
-                      Orbital Period: {item.orbital_period} days
-                    </Text>
-                    <Text style={styles.text}>Climate: {item.climate}</Text>
+        {loadingSearch && <Loading />}
+        {!loadingSearch &&
+          planets &&
+          planets.results &&
+          planets.results.length > 0 && (
+            <FlatList
+              data={planets.results}
+              onEndReached={fetchNextPage}
+              extraData={planets.results}
+              keyExtractor={(item) => item.name}
+              renderItem={({ item }) => (
+                <HorizontalLinearGradient
+                  start={[0, 1]}
+                  end={[1, 1]}
+                  colors={["rgba(255, 101, 132, 0.6)", "rgba(0,0,0, 0.9)"]}
+                  style={styles.cardContainer}
+                >
+                  <View style={styles.cardHeader}>
+                    <Text style={styles.cardTitle}>{item.name}</Text>
+                    <TouchableOpacity
+                      style={styles.detailButton}
+                      onPress={() => moveToDetail(item.name, item.url)}
+                    >
+                      <Text style={styles.detailText}>Detail</Text>
+                      <AntDesign
+                        name="arrowright"
+                        size={18}
+                        color="black"
+                        style={styles.detailText}
+                      />
+                    </TouchableOpacity>
                   </View>
-                  {Number(
-                    item.url
-                      .split("https://swapi.dev/api/planets/")[1]
-                      .split("/")[0]
-                  ) %
-                    2 ==
-                  0 ? (
-                    <Image
-                      source={require("../assets/spaceship.png")}
-                      style={styles.cardImage}
-                    />
-                  ) : (
-                    <Image
-                      source={require("../assets/astronout.png")}
-                      style={styles.cardImage}
-                    />
-                  )}
-                </View>
-              </HorizontalLinearGradient>
-            )}
-          />
-        ) : (
-          <NotFound />
-        )}
+                  <View style={styles.cardBodyContainer}>
+                    <View>
+                      <Text style={styles.text}>
+                        Rotation Period: {item.rotation_period} hours
+                      </Text>
+                      <Text style={styles.text}>
+                        Orbital Period: {item.orbital_period} days
+                      </Text>
+                      <Text style={styles.text}>Climate: {item.climate}</Text>
+                    </View>
+                    {Number(
+                      item.url
+                        .split("https://swapi.dev/api/planets/")[1]
+                        .split("/")[0]
+                    ) %
+                      2 ==
+                    0 ? (
+                      <Image
+                        source={require("../assets/spaceship.png")}
+                        style={styles.cardImage}
+                      />
+                    ) : (
+                      <Image
+                        source={require("../assets/astronout.png")}
+                        style={styles.cardImage}
+                      />
+                    )}
+                  </View>
+                </HorizontalLinearGradient>
+              )}
+            />
+          )}
+        {!loadingSearch && planets?.results?.length === 0 && <NotFound />}
       </AnimatedLinearGradient>
     </ImageBackground>
   );
